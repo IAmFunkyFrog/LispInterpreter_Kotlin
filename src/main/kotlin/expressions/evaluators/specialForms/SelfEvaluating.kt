@@ -3,7 +3,7 @@ package expressions.evaluators.specialForms
 import environment.Environment
 import expressions.evaluators.specialForms.SpecialForm
 
-class QuotedString(
+class SelfEvaluating(
     expression: List<String>,
     environment: Environment
 ) : SpecialForm(expression, environment) {
