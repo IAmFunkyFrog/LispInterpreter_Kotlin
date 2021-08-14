@@ -4,8 +4,8 @@ import environment.Environment
 import expressions.evaluators.Evaluator
 
 abstract class SpecialForm(
-    expression: List<String>,
-    environment: Environment
+    val expression: List<String>,
+    val environment: Environment
 ) {
     abstract fun evaluate(): List<String>
 }

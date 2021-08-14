@@ -8,6 +8,8 @@ class Variable(
     environment: Environment
 ) : SpecialForm(expression, environment) {
     override fun evaluate(): List<String> {
-        TODO("Not yet implemented")
+        val variable = environment.getVariable(expression[0])
+        if(variable != null) return variable
+        else throw Exception("Variable is undefined in environment")
     }
 }

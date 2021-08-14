@@ -8,6 +8,14 @@ class Lambda(
     environment: Environment
 ) : SpecialForm(expression, environment) {
     override fun evaluate(): List<String> {
-        TODO("Not yet implemented")
+        if(expression.size != 3) throw Exception("Wrong lambda definition")
+
+        val list = ArrayList<String>()
+
+        list.add("procedure")
+        list.add(expression[1])
+        list.add(expression[2])
+
+        return list
     }
 }
