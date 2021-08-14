@@ -1,14 +1,15 @@
 package expressions.evaluators.specialForms.predicates
 
 import environment.Environment
+import expressions.evaluators.specialForms.Lambda
 import expressions.evaluators.specialForms.SpecialForm
 
 class LambdaPredicate: Predicate {
     override fun check(expression: List<String>, environment: Environment): Boolean {
-        TODO("Not yet implemented")
+        return expression[0] == "lambda"
     }
 
     override fun getSpecialForm(expression: List<String>, environment: Environment): SpecialForm {
-        TODO("Not yet implemented")
+        return Lambda(expression, environment)
     }
 }

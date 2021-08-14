@@ -2,13 +2,14 @@ package expressions.evaluators.specialForms.predicates
 
 import environment.Environment
 import expressions.evaluators.specialForms.SpecialForm
+import expressions.evaluators.specialForms.Variable
 
 class VariablePredicate: Predicate {
     override fun check(expression: List<String>, environment: Environment): Boolean {
-        TODO("Not yet implemented")
+        return environment.getVariable(expression[0]) != null
     }
 
     override fun getSpecialForm(expression: List<String>, environment: Environment): SpecialForm {
-        TODO("Not yet implemented")
+        return Variable(expression, environment)
     }
 }

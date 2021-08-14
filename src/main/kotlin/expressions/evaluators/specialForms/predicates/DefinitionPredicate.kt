@@ -1,14 +1,15 @@
 package expressions.evaluators.specialForms.predicates
 
 import environment.Environment
+import expressions.evaluators.specialForms.Definition
 import expressions.evaluators.specialForms.SpecialForm
 
 class DefinitionPredicate: Predicate {
     override fun check(expression: List<String>, environment: Environment): Boolean {
-        TODO("Not yet implemented")
+        return expression[0] == "define"
     }
 
     override fun getSpecialForm(expression: List<String>, environment: Environment): SpecialForm {
-        TODO("Not yet implemented")
+        return Definition(expression, environment)
     }
 }
