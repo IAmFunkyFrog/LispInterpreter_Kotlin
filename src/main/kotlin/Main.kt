@@ -1,8 +1,8 @@
 import environment.MapEnvironment
-import expressions.evaluators.ListOfExpressions
+import expressions.evaluators.Expression
 
 fun main() {
     val expression = readLine()
-    if (expression != null) ListOfExpressions(expression, MapEnvironment()).evaluate()
+    if (expression != null) Expression(expression, MapEnvironment()).evaluate()
     else println("Empty input")
 }

@@ -3,7 +3,7 @@ package expressions.evaluators
 import environment.Environment
 import expressions.ExpressionParser
 
-class ListOfExpressions(
+class Expression(
     expression: String,
     environment: Environment
 ) : Evaluator(expression, environment) {

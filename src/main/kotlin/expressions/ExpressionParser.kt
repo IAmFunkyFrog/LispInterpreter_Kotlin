@@ -19,6 +19,7 @@ class ExpressionParser(
                 ')' -> {
                     bracket--
                     if (bracket >= 1) builder.append(symbol)
+                    if (bracket == 0) break
                 }
                 ' ' -> {
                     list.add(builder.toString())
