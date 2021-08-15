@@ -10,12 +10,17 @@ class Lambda(
     override fun evaluate(): List<String> {
         if(expression.size != 3) throw Exception("Wrong lambda definition")
 
-        val list = ArrayList<String>()
+        return expression
+    }
 
-        list.add("procedure")
-        list.add(expression[1])
-        list.add(expression[2])
-
-        return list
+    companion object {
+        fun make(parameters: List<String>, body: String): String {
+            val parametersString = parameters.joinToString(separator = " ", prefix = "(", postfix = ")")
+            val lambda = emptyList<String>() as MutableList<String>
+            lambda.add("lambda")
+            lambda.add(parametersString)
+            lambda.add(body)
+            return lambda.joinToString(separator = " ", prefix = "(", postfix = ")")
+        }
     }
 }
