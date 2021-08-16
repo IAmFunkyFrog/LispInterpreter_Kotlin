@@ -1,5 +1,6 @@
 package environment
 
+import environment.primitiveProcedures.Comparison
 import environment.primitiveProcedures.Plus
 import environment.primitiveProcedures.PrimitiveProcedure
 import java.util.*
@@ -8,7 +9,12 @@ class MapEnvironment(
     override val embracingEnvironment: Environment? = null
 ): Environment {
     private val primitiveProcedures = TreeMap<String, PrimitiveProcedure>().apply {
-        this["+"] = Plus()
+        Plus().let {
+            this[it.name] = it
+        }
+        Comparison().let {
+            this[it.name] = it
+        }
     }
 
     private val variables = TreeMap<String, List<String>>()
