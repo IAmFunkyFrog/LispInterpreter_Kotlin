@@ -7,7 +7,7 @@ class Condition(
     expression: List<String>,
     environment: Environment
 ) : SpecialForm(expression, environment) {
-    override fun evaluate(): List<String> {
+    override fun evaluate(): Pair<List<String>, Environment> {
         TODO("Not yet implemented")
     }
 }

@@ -2,7 +2,13 @@ import environment.MapEnvironment
 import expressions.evaluators.Expression
 
 fun main() {
-    val expression = readLine()
-    if (expression != null) Expression(expression, MapEnvironment()).evaluate()
-    else println("Empty input")
+    val environment = MapEnvironment()
+    while(true) {
+        val expression = readLine()
+        if (expression != null) {
+            println(Expression(expression, environment).evaluate())
+            println(environment.debugLog())
+        }
+        else println("Empty input")
+    }
 }

@@ -1,6 +1,7 @@
 package expressions.evaluators.specialForms
 
 import environment.Environment
+import expressions.ExpressionParser
 import expressions.evaluators.Expression
 import expressions.evaluators.specialForms.SpecialForm
 
@@ -9,39 +10,40 @@ class Application(
     expression: List<String>,
     environment: Environment
 ) : SpecialForm(expression, environment) {
-    override fun evaluate(): List<String> {
+    override fun evaluate(): Pair<List<String>, Environment> {
         val lambda = environment.getProcedure(expression[0])
         if (lambda == null) {
             val primitiveProcedure = environment.getPrimitiveProcedure(expression[0])
                 ?: throw Exception("Given expression is not application")
 
-            return primitiveProcedure.evaluate(expression, environment)
+            return Pair(primitiveProcedure.evaluate(expression, environment), environment)
         } else {
-            val evaluatedParameters = expression.subList(1, expression.size).map {
-                Expression(it, environment).evaluate()
-            }
+            val givenParameters = expression.subList(1, expression.size)
 
             val lambdaEnvironment = lambda.second
             val lambdaBody = lambda.first
 
             val lambdaParameters = lambdaBody[1].trim('(').trimEnd(')').split(' ')
 
-            if (evaluatedParameters.size > lambdaParameters.size) throw Exception("In application excepted ${lambdaParameters.size} but given ${evaluatedParameters.size}")
+            if (givenParameters.size > lambdaParameters.size) throw Exception("In application excepted ${lambdaParameters.size} parameter but given ${givenParameters.size}")
             else {
-                for (i in evaluatedParameters.indices) {
+                var extendedEnvironment = lambdaEnvironment
+                for (i in givenParameters.indices) {
+                    extendedEnvironment = extendedEnvironment.extendEnvironment()
+                    //TODO решить проблему с возвратом лямбд из define
                     Definition(ArrayList<String>().apply {
                         add("define")
                         add(lambdaParameters[i])
-                        add(evaluatedParameters[i].joinToString(separator = " ", prefix = "(", postfix = ")"))
-                    }, lambdaEnvironment).evaluate()
+                        add(givenParameters[i])
+                    }, extendedEnvironment).evaluate()
                 }
-                return if (evaluatedParameters.size < lambdaParameters.size) Lambda.make(
+                return if (givenParameters.size < lambdaParameters.size) Pair(ExpressionParser(Lambda.make(
                     lambdaParameters.subList(
-                        evaluatedParameters.size,
+                        givenParameters.size,
                         lambdaParameters.size
                     ), lambdaBody[2]
-                ).trim('(').trimEnd(')').split(" ")
-                else Expression(lambdaBody[2], lambdaEnvironment).evaluate()
+                )).parse(), extendedEnvironment)
+                else Expression(lambdaBody[2], extendedEnvironment).evaluate()
             }
         }
     }

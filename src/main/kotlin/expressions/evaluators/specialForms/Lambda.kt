@@ -7,19 +7,21 @@ class Lambda(
     expression: List<String>,
     environment: Environment
 ) : SpecialForm(expression, environment) {
-    override fun evaluate(): List<String> {
+    override fun evaluate(): Pair<List<String>, Environment> {
         if(expression.size != 3) throw Exception("Wrong lambda definition")
 
-        return expression
+        return Pair(expression, environment)
     }
 
     companion object {
         fun make(parameters: List<String>, body: String): String {
             val parametersString = parameters.joinToString(separator = " ", prefix = "(", postfix = ")")
-            val lambda = emptyList<String>() as MutableList<String>
-            lambda.add("lambda")
-            lambda.add(parametersString)
-            lambda.add(body)
+            val lambda = ArrayList<String>().apply {
+                add("lambda")
+                add(parametersString)
+                add(body)
+            }
+            println(lambda.joinToString(separator = " ", prefix = "(", postfix = ")"))
             return lambda.joinToString(separator = " ", prefix = "(", postfix = ")")
         }
     }

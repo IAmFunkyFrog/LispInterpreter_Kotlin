@@ -9,5 +9,5 @@ abstract class Evaluator(
 ) {
     private val parsedExpression = ExpressionParser(expression).parse()
 
-    abstract fun evaluate(): List<String>
+    abstract fun evaluate(): Pair<List<String>, Environment>
 }

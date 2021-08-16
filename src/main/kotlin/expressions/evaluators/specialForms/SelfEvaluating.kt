@@ -8,18 +8,18 @@ class SelfEvaluating(
     expression: List<String>,
     environment: Environment
 ) : SpecialForm(expression, environment) {
-    override fun evaluate(): List<String> {
+    override fun evaluate(): Pair<List<String>, Environment> {
         val list = ArrayList<String>()
         return when {
             expression[0].toIntOrNull() != null -> {
                 list.add("int")
                 list.add(expression[0])
-                list
+                Pair(list, environment)
             }
             expression[0].toFloatOrNull() != null -> {
                 list.add("float")
                 list.add(expression[0])
-                list
+                Pair(list, environment)
             }
             else -> throw Exception("Given expression is not self evaluating form")
         }

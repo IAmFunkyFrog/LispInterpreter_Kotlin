@@ -8,8 +8,8 @@ class If(
     expression: List<String>,
     environment: Environment
 ) : SpecialForm(expression, environment) {
-    override fun evaluate(): List<String> {
-        val conditionResult = Expression(expression[1], environment).evaluate()
+    override fun evaluate(): Pair<List<String>, Environment> {
+        val conditionResult = Expression(expression[1], environment).evaluate().first
 
         return if(conditionResult[0] == "false" && conditionResult.size == 1) Expression(expression[2], environment).evaluate()
         else Expression(expression[3], environment).evaluate()

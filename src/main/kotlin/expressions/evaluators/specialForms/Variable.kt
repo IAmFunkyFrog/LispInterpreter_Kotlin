@@ -7,9 +7,9 @@ class Variable(
     expression: List<String>,
     environment: Environment
 ) : SpecialForm(expression, environment) {
-    override fun evaluate(): List<String> {
+    override fun evaluate(): Pair<List<String>, Environment> {
         val variable = environment.getVariable(expression[0])
-        if(variable != null) return variable
+        if(variable != null) return Pair(variable, environment)
         else throw Exception("Variable is undefined in environment")
     }
 }

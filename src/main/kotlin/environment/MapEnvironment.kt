@@ -5,7 +5,7 @@ import environment.primitiveProcedures.PrimitiveProcedure
 import java.util.*
 
 class MapEnvironment(
-    private val embracingEnvironment: Environment? = null
+    override val embracingEnvironment: Environment? = null
 ): Environment {
     private val primitiveProcedures = TreeMap<String, PrimitiveProcedure>().apply {
         this["+"] = Plus()
@@ -37,5 +37,10 @@ class MapEnvironment(
     }
 
     override fun extendEnvironment(): Environment = MapEnvironment(this)
+
+    override fun debugLog() {
+        println(variables)
+        println(procedures)
+    }
 
 }

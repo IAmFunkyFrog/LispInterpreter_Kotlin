@@ -22,8 +22,11 @@ class ExpressionParser(
                     if (bracket == 0) break
                 }
                 ' ' -> {
-                    list.add(builder.toString())
-                    builder.clear()
+                    if(bracket == 1) {
+                        list.add(builder.toString())
+                        builder.clear()
+                    }
+                    else builder.append(symbol)
                 }
                 else -> {
                     builder.append(symbol)

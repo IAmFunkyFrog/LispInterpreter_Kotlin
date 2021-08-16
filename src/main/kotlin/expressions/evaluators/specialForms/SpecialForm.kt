@@ -7,5 +7,5 @@ abstract class SpecialForm(
     val expression: List<String>,
     val environment: Environment
 ) {
-    abstract fun evaluate(): List<String>
+    abstract fun evaluate(): Pair<List<String>, Environment>
 }
