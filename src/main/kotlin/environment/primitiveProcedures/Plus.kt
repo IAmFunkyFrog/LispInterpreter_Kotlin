@@ -10,8 +10,6 @@ class Plus(): PrimitiveProcedure {
         if(expression.size > 3) throw Exception("Excepted 2 parameters but given ${expression.size - 1}")
         if(expression[0] != name) throw Exception("Bad procedure name given to plus evaluator")
 
-        println(expression)
-
         val parameter1 = Expression(expression[1], environment).evaluate().first
         val parameter2 = Expression(expression[2], environment).evaluate().first
 
