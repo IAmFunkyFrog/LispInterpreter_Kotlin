@@ -1,6 +1,7 @@
 package expressions.evaluators.specialForms
 
 import environment.Environment
+import expressions.evaluators.Expression
 import expressions.evaluators.specialForms.SpecialForm
 
 class Begin(
@@ -8,6 +9,7 @@ class Begin(
     environment: Environment
 ) : SpecialForm(expression, environment) {
     override fun evaluate(): Pair<List<String>, Environment> {
-        TODO("Not yet implemented")
+        for(i in 1 until expression.size - 1) Expression(expression[i], environment).evaluate()
+        return Expression(expression[expression.size - 1], environment).evaluate()
     }
 }
