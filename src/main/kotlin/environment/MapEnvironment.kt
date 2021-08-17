@@ -1,18 +1,23 @@
 package environment
 
-import environment.primitiveProcedures.Comparison
-import environment.primitiveProcedures.Plus
-import environment.primitiveProcedures.PrimitiveProcedure
+import environment.primitiveProcedures.*
 import java.util.*
 
 class MapEnvironment(
     override val embracingEnvironment: Environment? = null
 ): Environment {
+    //TODO засунуть инициализацию в интерфейс
     private val primitiveProcedures = TreeMap<String, PrimitiveProcedure>().apply {
         Plus().let {
             this[it.name] = it
         }
         Comparison().let {
+            this[it.name] = it
+        }
+        Not().let {
+            this[it.name] = it
+        }
+        Or().let {
             this[it.name] = it
         }
     }
