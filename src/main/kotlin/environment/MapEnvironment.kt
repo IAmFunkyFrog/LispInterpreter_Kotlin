@@ -20,6 +20,9 @@ class MapEnvironment(
         Or().let {
             this[it.name] = it
         }
+        Minus().let {
+            this[it.name] = it
+        }
     }
 
     private val variables = TreeMap<String, List<String>>()
