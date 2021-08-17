@@ -21,7 +21,6 @@ class Lambda(
                 add(parametersString)
                 add(body)
             }
-            println(lambda.joinToString(separator = " ", prefix = "(", postfix = ")"))
             return lambda.joinToString(separator = " ", prefix = "(", postfix = ")")
         }
     }

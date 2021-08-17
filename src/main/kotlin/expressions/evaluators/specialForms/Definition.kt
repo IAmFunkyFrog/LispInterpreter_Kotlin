@@ -11,7 +11,6 @@ class Definition(
     environment: Environment
 ) : SpecialForm(expression, environment) {
     override fun evaluate(): Pair<List<String>, Environment> {
-        //TODO добавить определение процедур
         return if(isList(expression[1])) {
             val parsedParameters = ExpressionParser(expression[1]).parse()
             val parameters = parsedParameters.subList(1, parsedParameters.size)
@@ -22,22 +21,27 @@ class Definition(
                 add(lambda)
             }, environment).evaluate()
         } else {
-            val lambdaPredicate = LambdaPredicate()
-            val parsedExpression = Expression(expression[2], environment).evaluate()
-            if(lambdaPredicate.check(parsedExpression.first, parsedExpression.second)) {
-                val value = lambdaPredicate.getSpecialForm(parsedExpression.first, parsedExpression.second).evaluate()
-                environment.setProcedure(expression[1], value.first, parsedExpression.second)
-                Pair(value.first, environment)
-            }
-            else {
-                val value = Expression(expression[2], environment).evaluate()
-                environment.setVariable(expression[1], value.first)
-                Pair(value.first, environment)
-            }
+            val evaluatedExpression = Expression(expression[2], environment).evaluate()
+            define(expression[1], evaluatedExpression, environment)
         }
     }
 
     private fun isList(string: String): Boolean {
         return string[0] == '(' && string[string.length - 1] == ')'
+    }
+
+    companion object {
+        fun define(name: String, evaluatedExpression: Pair<List<String>, Environment>, environment: Environment): Pair<List<String>, Environment> {
+            val lambdaPredicate = LambdaPredicate()
+            return if(lambdaPredicate.check(evaluatedExpression.first, evaluatedExpression.second)) {
+                val value = lambdaPredicate.getSpecialForm(evaluatedExpression.first, evaluatedExpression.second).evaluate()
+                environment.setProcedure(name, value.first, evaluatedExpression.second)
+                Pair(value.first, environment)
+            }
+            else {
+                environment.setVariable(name, evaluatedExpression.first)
+                Pair(evaluatedExpression.first, environment)
+            }
+        }
     }
 }

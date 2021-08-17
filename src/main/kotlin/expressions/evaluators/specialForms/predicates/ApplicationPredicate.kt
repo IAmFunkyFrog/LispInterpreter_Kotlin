@@ -6,10 +6,14 @@ import expressions.evaluators.specialForms.SpecialForm
 
 class ApplicationPredicate: Predicate {
     override fun check(expression: List<String>, environment: Environment): Boolean {
-        return environment.getProcedure(expression[0]) != null || environment.getPrimitiveProcedure(expression[0]) != null
+        return environment.getProcedure(expression[0]) != null || environment.getPrimitiveProcedure(expression[0]) != null || isList(expression[0])
     }
 
     override fun getSpecialForm(expression: List<String>, environment: Environment): SpecialForm {
         return Application(expression, environment)
+    }
+
+    private fun isList(string: String): Boolean {
+        return string[0] == '(' && string[string.length - 1] == ')'
     }
 }
