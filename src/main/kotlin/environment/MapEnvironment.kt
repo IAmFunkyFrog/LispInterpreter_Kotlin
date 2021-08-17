@@ -23,6 +23,15 @@ class MapEnvironment(
         Minus().let {
             this[it.name] = it
         }
+        Multiplication().let {
+            this[it.name] = it
+        }
+        Division().let {
+            this[it.name] = it
+        }
+        And().let {
+            this[it.name] = it
+        }
     }
 
     private val variables = TreeMap<String, List<String>>()
