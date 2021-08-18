@@ -4,7 +4,7 @@ import environment.Environment
 import expressions.evaluators.Expression
 import expressions.evaluators.specialForms.SelfEvaluating
 
-class isNil(): PrimitiveProcedure {
+class IsNil(): PrimitiveProcedure {
     override val name: String = "nil?"
 
     override fun evaluate(expression: List<String>, environment: Environment): List<String> {
