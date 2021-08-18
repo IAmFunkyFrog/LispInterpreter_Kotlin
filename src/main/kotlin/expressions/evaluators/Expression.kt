@@ -11,12 +11,12 @@ class Expression(
     private val parsedExpression = ExpressionParser(expression).parse()
 
     private val predicates = ArrayList<Predicate>().apply {
+        add(VariablePredicate())
         add(ApplicationPredicate())
         add(DefinitionPredicate())
         add(IfPredicate())
         add(LambdaPredicate())
         add(SelfEvaluatingPredicate())
-        add(VariablePredicate())
         add(BeginPredicate())
         add(ConditionPredicate())
         add(ImportPredicate())

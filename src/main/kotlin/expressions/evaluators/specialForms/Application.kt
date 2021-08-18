@@ -50,14 +50,7 @@ class Application(
         else {
             val extendedEnvironment = lambdaEnvironment.extendEnvironment()
             for (i in givenParameters.indices) {
-                val variablePredicate = VariablePredicate()
-                val parsedParameter = ExpressionParser(givenParameters[i]).parse()
-                val evaluatedParameter =
-                    if (variablePredicate.check(parsedParameter, environment)) variablePredicate.getSpecialForm(
-                        parsedParameter,
-                        environment
-                    ).evaluate()
-                    else Expression(givenParameters[i], environment).evaluate()
+                val evaluatedParameter = Expression(givenParameters[i], environment).evaluate()
                 Definition.define(lambdaParameters[i], evaluatedParameter, extendedEnvironment)
             }
             return if (givenParameters.size < lambdaParameters.size) Pair(

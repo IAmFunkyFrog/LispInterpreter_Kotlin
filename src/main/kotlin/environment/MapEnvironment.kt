@@ -43,8 +43,8 @@ class MapEnvironment(
         }
     }
 
-    private val variables = TreeMap<String, List<String>>()
-    private val procedures = TreeMap<String, Pair<List<String>, Environment>>()
+    private val variables = TreeMap<String, List<String>?>()
+    private val procedures = TreeMap<String, Pair<List<String>, Environment>?>()
 
     override fun getVariable(variable: String): List<String>? {
         return if(embracingEnvironment == null) variables[variable]
