@@ -55,6 +55,15 @@ class MapEnvironment(
         variables[variable] = value
     }
 
+    override fun setVariable(variable: String, value: List<String>) {
+        val v = variables[variable]
+        if(v == null) {
+            if(embracingEnvironment != null) embracingEnvironment.setVariable(variable, value)
+            else throw Exception("Assignment to not defined variable not supported")
+        }
+        else variables[variable] = value
+    }
+
     override fun getProcedure(procedure: String): Pair<List<String>, Environment>? {
         return if(embracingEnvironment == null) procedures[procedure]
         else procedures[procedure] ?: embracingEnvironment.getProcedure(procedure)
@@ -62,6 +71,15 @@ class MapEnvironment(
 
     override fun defineProcedure(procedure: String, body: List<String>, environment: Environment) {
         procedures[procedure] = Pair(body, environment)
+    }
+
+    override fun setProcedure(procedure: String, body: List<String>, environment: Environment) {
+        val p = procedures[procedure]
+        if(p == null) {
+            if(embracingEnvironment != null) embracingEnvironment.setProcedure(procedure, body, environment)
+            else throw Exception("Assignment to not defined procedures not supported")
+        }
+        else procedures[procedure] = Pair(body, environment)
     }
 
     override fun getPrimitiveProcedure(procedure: String): PrimitiveProcedure? {
