@@ -51,7 +51,7 @@ class MapEnvironment(
         else variables[variable] ?: embracingEnvironment.getVariable(variable)
     }
 
-    override fun setVariable(variable: String, value: List<String>) {
+    override fun defineVariable(variable: String, value: List<String>) {
         variables[variable] = value
     }
 
@@ -60,7 +60,7 @@ class MapEnvironment(
         else procedures[procedure] ?: embracingEnvironment.getProcedure(procedure)
     }
 
-    override fun setProcedure(procedure: String, body: List<String>, environment: Environment) {
+    override fun defineProcedure(procedure: String, body: List<String>, environment: Environment) {
         procedures[procedure] = Pair(body, environment)
     }
 

@@ -3,7 +3,6 @@ package expressions.evaluators.specialForms
 import environment.Environment
 import expressions.ExpressionParser
 import expressions.evaluators.Expression
-import expressions.evaluators.specialForms.predicates.ApplicationPredicate
 import expressions.evaluators.specialForms.predicates.LambdaPredicate
 
 class Definition(
@@ -35,11 +34,11 @@ class Definition(
             val lambdaPredicate = LambdaPredicate()
             return if(lambdaPredicate.check(evaluatedExpression.first, evaluatedExpression.second)) {
                 val value = lambdaPredicate.getSpecialForm(evaluatedExpression.first, evaluatedExpression.second).evaluate()
-                environment.setProcedure(name, value.first, evaluatedExpression.second)
+                environment.defineProcedure(name, value.first, evaluatedExpression.second)
                 Pair(value.first, environment)
             }
             else {
-                environment.setVariable(name, evaluatedExpression.first)
+                environment.defineVariable(name, evaluatedExpression.first)
                 Pair(evaluatedExpression.first, environment)
             }
         }
