@@ -32,6 +32,15 @@ class MapEnvironment(
         And().let {
             this[it.name] = it
         }
+        Error().let {
+            this[it.name] = it
+        }
+        NumberEqual().let {
+            this[it.name] = it
+        }
+        IsNil().let {
+            this[it.name] = it
+        }
     }
 
     private val variables = TreeMap<String, List<String>>()

@@ -18,6 +18,9 @@ class Expression(
         add(SelfEvaluatingPredicate())
         add(VariablePredicate())
         add(BeginPredicate())
+        add(ConditionPredicate())
+        add(ImportPredicate())
+        add(LispListPredicate())
     }
 
     override fun evaluate(): Pair<List<String>, Environment> {
