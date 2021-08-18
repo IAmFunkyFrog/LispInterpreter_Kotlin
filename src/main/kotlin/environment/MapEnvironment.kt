@@ -6,6 +6,8 @@ import java.util.*
 class MapEnvironment(
     override val embracingEnvironment: Environment? = null
 ): Environment {
+    override val deep: Int
+        get() = if(embracingEnvironment == null) 0 else embracingEnvironment.deep + 1
     //TODO засунуть инициализацию в интерфейс
     private val primitiveProcedures = TreeMap<String, PrimitiveProcedure>().apply {
         Plus().let {
@@ -64,6 +66,11 @@ class MapEnvironment(
         else variables[variable] = value
     }
 
+    override fun deepOfVariable(variable: String): Int {
+        return if(variables[variable] != null) deep
+        else embracingEnvironment?.deepOfVariable(variable) ?: Int.MAX_VALUE
+    }
+
     override fun getProcedure(procedure: String): Pair<List<String>, Environment>? {
         return if(embracingEnvironment == null) procedures[procedure]
         else procedures[procedure] ?: embracingEnvironment.getProcedure(procedure)
@@ -80,6 +87,15 @@ class MapEnvironment(
             else throw Exception("Assignment to not defined procedures not supported")
         }
         else procedures[procedure] = Pair(body, environment)
+    }
+
+    override fun deepOfProcedure(procedure: String): Int {
+        return if(procedures[procedure] != null) deep
+        else {
+            embracingEnvironment?.deepOfProcedure(procedure)
+                ?: if(getPrimitiveProcedure(procedure) != null) 0
+                else Int.MAX_VALUE
+        }
     }
 
     override fun getPrimitiveProcedure(procedure: String): PrimitiveProcedure? {
