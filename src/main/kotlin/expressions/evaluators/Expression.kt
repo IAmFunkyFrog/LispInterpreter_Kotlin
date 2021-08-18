@@ -17,12 +17,13 @@ class Expression(
         add(LambdaPredicate())
         add(SelfEvaluatingPredicate())
         add(VariablePredicate())
+        add(BeginPredicate())
     }
 
     override fun evaluate(): Pair<List<String>, Environment> {
         for(predicate in predicates) {
             if(predicate.check(parsedExpression, environment)) return predicate.getSpecialForm(parsedExpression, environment).evaluate()
         }
-        throw Exception("Cant parse this type of list")
+        throw Exception("Cant parse this type of list $parsedExpression")
     }
 }

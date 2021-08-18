@@ -11,11 +11,7 @@ class If(
     override fun evaluate(): Pair<List<String>, Environment> {
         val conditionResult = Expression(expression[1], environment).evaluate().first
 
-        return if(isFalse(conditionResult)) Expression(expression[3], environment).evaluate()
+        return if(SelfEvaluating.isFalse(conditionResult)) Expression(expression[3], environment).evaluate()
         else Expression(expression[2], environment).evaluate()
-    }
-
-    companion object {
-        fun isFalse(expression: List<String>) =expression[0] == "false" && expression.size == 1
     }
 }

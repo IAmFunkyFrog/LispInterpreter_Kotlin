@@ -4,10 +4,11 @@ import environment.Environment
 import expressions.evaluators.specialForms.SelfEvaluating
 import expressions.evaluators.specialForms.SpecialForm
 
-class SelfEvaluatingPredicate: Predicate {
+class SelfEvaluatingPredicate : Predicate {
     //TODO: добавить поддержку строк
     override fun check(expression: List<String>, environment: Environment): Boolean {
-        return expression[0].toIntOrNull() != null || expression[0].toFloatOrNull() != null
+        return SelfEvaluating.isInt(expression) || SelfEvaluating.isFloat(expression) || SelfEvaluating.isNil(expression)
+                || SelfEvaluating.isFalse(expression) || SelfEvaluating.isQuotedString(expression)
     }
 
     override fun getSpecialForm(expression: List<String>, environment: Environment): SpecialForm {

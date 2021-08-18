@@ -3,6 +3,7 @@ package environment.primitiveProcedures
 import environment.Environment
 import expressions.evaluators.Expression
 import expressions.evaluators.specialForms.If
+import expressions.evaluators.specialForms.SelfEvaluating
 
 class And(): PrimitiveProcedure {
     override val name: String = "and"
@@ -15,7 +16,7 @@ class And(): PrimitiveProcedure {
         val parameter2 = Expression(expression[2], environment).evaluate().first
 
         return ArrayList<String>().apply {
-            if(If.isFalse(parameter1) || If.isFalse(parameter2)) add("false")
+            if(SelfEvaluating.isFalse(parameter1) || SelfEvaluating.isFalse(parameter2)) add("false")
             else add("true")
         }
     }
