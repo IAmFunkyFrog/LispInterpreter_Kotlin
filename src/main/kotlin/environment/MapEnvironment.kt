@@ -68,7 +68,7 @@ class MapEnvironment(
 
     override fun deepOfVariable(variable: String): Int {
         return if(variables[variable] != null) deep
-        else embracingEnvironment?.deepOfVariable(variable) ?: Int.MAX_VALUE
+        else embracingEnvironment?.deepOfVariable(variable) ?: -1
     }
 
     override fun getProcedure(procedure: String): Pair<List<String>, Environment>? {
@@ -94,7 +94,7 @@ class MapEnvironment(
         else {
             embracingEnvironment?.deepOfProcedure(procedure)
                 ?: if(getPrimitiveProcedure(procedure) != null) 0
-                else Int.MAX_VALUE
+                else -1
         }
     }
 
