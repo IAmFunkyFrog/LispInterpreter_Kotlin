@@ -43,6 +43,9 @@ class MapEnvironment(
         IsNil().let {
             this[it.name] = it
         }
+        DisplayNewline().let {
+            this[it.name] = it
+        }
     }
 
     private val variables = TreeMap<String, List<String>?>()
