@@ -56,14 +56,20 @@ class MapEnvironment(
         else variables[variable] ?: embracingEnvironment.getVariable(variable)
     }
 
+    //TODO подумать над тем, как должен работать define, если уже определена процедура с таким именем
     override fun defineVariable(variable: String, value: List<String>) {
+        procedures[variable] = null
         variables[variable] = value
     }
 
     override fun setVariable(variable: String, value: List<String>) {
         val v = variables[variable]
         if(v == null) {
-            if(embracingEnvironment != null) embracingEnvironment.setVariable(variable, value)
+            if(procedures[variable] != null) {
+                procedures[variable] = null
+                variables[variable] = value
+            }
+            else if(embracingEnvironment != null) embracingEnvironment.setVariable(variable, value)
             else throw Exception("Assignment to not defined variable not supported")
         }
         else variables[variable] = value
@@ -80,13 +86,18 @@ class MapEnvironment(
     }
 
     override fun defineProcedure(procedure: String, body: List<String>, environment: Environment) {
+        variables[procedure] = null
         procedures[procedure] = Pair(body, environment)
     }
 
     override fun setProcedure(procedure: String, body: List<String>, environment: Environment) {
         val p = procedures[procedure]
         if(p == null) {
-            if(embracingEnvironment != null) embracingEnvironment.setProcedure(procedure, body, environment)
+            if(variables[procedure] != null) {
+                variables[procedure] = null
+                procedures[procedure] = Pair(body, environment)
+            }
+            else if(embracingEnvironment != null) embracingEnvironment.setProcedure(procedure, body, environment)
             else throw Exception("Assignment to not defined procedures not supported")
         }
         else procedures[procedure] = Pair(body, environment)
