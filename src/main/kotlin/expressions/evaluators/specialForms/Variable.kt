@@ -6,6 +6,7 @@ class Variable(
     expression: List<String>,
     environment: Environment
 ) : SpecialForm(expression, environment) {
+    //TODO подумать над тем как поправить крайне кастыльно сделанный cons
     override fun evaluate(): Pair<List<String>, Environment> {
         val variable = environment.getVariable(expression[0])
         return if (variable != null) Pair(variable, environment)
