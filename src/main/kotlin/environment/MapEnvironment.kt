@@ -46,6 +46,12 @@ class MapEnvironment(
         DisplayNewline().let {
             this[it.name] = it
         }
+        Car().let {
+            this[it.name] = it
+        }
+        Cdr().let {
+            this[it.name] = it
+        }
     }
 
     private val variables = TreeMap<String, List<String>?>()

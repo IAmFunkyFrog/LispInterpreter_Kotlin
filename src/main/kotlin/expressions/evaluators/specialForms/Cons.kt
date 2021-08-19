@@ -8,9 +8,6 @@ class Cons(
     expression: List<String>,
     environment: Environment
 ) : SpecialForm(expression, environment) {
-    private val cdrEnvironmentName = "_cdr"
-    private val carEnvironmentName = "_car"
-
     override fun evaluate(): Pair<List<String>, Environment> {
         val extendedEnvironment = environment.extendEnvironment()
         val car = Expression(expression[1], environment).evaluate()
@@ -19,5 +16,10 @@ class Cons(
         Definition.define(cdrEnvironmentName, cdr, extendedEnvironment)
 
         return Pair(expression, extendedEnvironment)
+    }
+
+    companion object {
+        val cdrEnvironmentName = "_cdr"
+        val carEnvironmentName = "_car"
     }
 }

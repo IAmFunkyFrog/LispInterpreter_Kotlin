@@ -22,6 +22,7 @@ class Expression(
         add(ImportPredicate())
         add(LispListPredicate())
         add(AssignmentPredicate())
+        add(ConsPredicate())
     }
 
     override fun evaluate(): Pair<List<String>, Environment> {
