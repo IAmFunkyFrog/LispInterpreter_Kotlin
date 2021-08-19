@@ -3,6 +3,7 @@ package expressions.evaluators.specialForms
 import environment.Environment
 import expressions.ExpressionParser
 import expressions.evaluators.Expression
+import expressions.evaluators.specialForms.predicates.ConsPredicate
 import expressions.evaluators.specialForms.predicates.LambdaPredicate
 
 class Definition(
@@ -32,10 +33,14 @@ class Definition(
     companion object {
         fun define(name: String, evaluatedExpression: Pair<List<String>, Environment>, environment: Environment): Pair<List<String>, Environment> {
             val lambdaPredicate = LambdaPredicate()
+            val consPredicate = ConsPredicate()
             return if(lambdaPredicate.check(evaluatedExpression.first, evaluatedExpression.second)) {
-                val value = lambdaPredicate.getSpecialForm(evaluatedExpression.first, evaluatedExpression.second).evaluate()
-                environment.defineProcedure(name, value.first, evaluatedExpression.second)
-                Pair(value.first, environment)
+                environment.defineProcedure(name, evaluatedExpression.first, evaluatedExpression.second)
+                Pair(evaluatedExpression.first, environment)
+            }
+            else if(consPredicate.check(evaluatedExpression.first, evaluatedExpression.second)) {
+                environment.defineProcedure(name, evaluatedExpression.first, evaluatedExpression.second)
+                Pair(evaluatedExpression.first, environment)
             }
             else {
                 environment.defineVariable(name, evaluatedExpression.first)

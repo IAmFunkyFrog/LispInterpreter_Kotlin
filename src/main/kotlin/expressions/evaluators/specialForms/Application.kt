@@ -16,10 +16,7 @@ class Application(
         if (lambda == null) {
             val primitiveProcedure = environment.getPrimitiveProcedure(expression[0])
 
-            return if (primitiveProcedure != null) Pair(
-                primitiveProcedure.evaluate(expression, environment),
-                environment
-            )
+            return if (primitiveProcedure != null) primitiveProcedure.evaluate(expression, environment)
             else {
                 val lambdaPredicate = LambdaPredicate()
                 val parsedFirstElement = Expression(expression[0], environment).evaluate()

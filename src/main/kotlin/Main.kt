@@ -6,7 +6,7 @@ fun main() {
     while(true) {
         val expression = readLine()
         if (expression != null) {
-            println(Expression(expression, environment).evaluate())
+            println(Expression(expression, environment).evaluate().first)
             println(environment.debugLog())
         }
         else println("Empty input")
