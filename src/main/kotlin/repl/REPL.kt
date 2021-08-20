@@ -13,8 +13,6 @@ class REPL(
 ) {
     fun start() {
         val consPredicate = ConsPredicate()
-        val car = Car()
-        val cdr = Cdr()
         while(true) {
             val expression = readLine()
             if (expression != null) {
@@ -23,13 +21,14 @@ class REPL(
                 if(consPredicate.check(evaluatedExpression.first, evaluatedExpression.second)) {
                     var currentCons: Pair<List<String>, Environment>? = evaluatedExpression
                     while(currentCons != null) {
-                        val carValue = car.evaluate(evaluatedExpression.first, evaluatedExpression.second)
-                        val cdrValue = cdr.evaluate(evaluatedExpression.first, evaluatedExpression.second)
+                        //TODO технический долг и вообще кастыль
+                        val carValue = Expression("(car ${ currentCons.first.joinToString(separator = " ", prefix = "(", postfix = ")") })", currentCons.second).evaluate()
+                        val cdrValue = Expression("(cdr ${ currentCons.first.joinToString(separator = " ", prefix = "(", postfix = ")") })", currentCons.second).evaluate()
 
                         listToPrint.add(evaluateListToString(carValue.first))
                         currentCons = if(consPredicate.check(cdrValue.first, cdrValue.second)) cdrValue
                         else {
-                            listToPrint.add(evaluateListToString(cdrValue.first))
+                            if(!SelfEvaluating.isNil(cdrValue.first)) listToPrint.add(evaluateListToString(cdrValue.first))
                             null
                         }
                     }
