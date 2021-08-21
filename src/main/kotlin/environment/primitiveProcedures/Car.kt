@@ -19,7 +19,12 @@ class Car(): PrimitiveProcedure {
         return if(!consPredicate.check(parameter1.first, environment)) throw Exception("Not cons form given to $name procedure")
         else {
             val v = parameter1.second.getVariable(Cons.carEnvironmentName)
-            if(v != null) Pair(v, environment)
+            val p = parameter1.second.getProcedure(Cons.carEnvironmentName)
+            if(v != null) {
+                if(p == null) Pair(v, environment)
+                else if(environment.deepOfProcedure(Cons.carEnvironmentName) > environment.deepOfVariable(Cons.carEnvironmentName)) p
+                else Pair(v, environment)
+            }
             else {
                 parameter1.second.getProcedure(Cons.carEnvironmentName)
                     ?: throw Exception("Unexpected error while parsing car procedure")

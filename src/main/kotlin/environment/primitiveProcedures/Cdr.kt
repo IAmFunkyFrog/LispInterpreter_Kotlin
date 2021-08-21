@@ -19,10 +19,15 @@ class Cdr(): PrimitiveProcedure {
         return if(!consPredicate.check(parameter1.first, environment)) throw Exception("Not cons form given to $name procedure")
         else {
             val v = parameter1.second.getVariable(Cons.cdrEnvironmentName)
-            if(v != null) Pair(v, environment)
+            val p = parameter1.second.getProcedure(Cons.cdrEnvironmentName)
+            if(v != null) {
+                if(p == null) Pair(v, environment)
+                else if(environment.deepOfProcedure(Cons.cdrEnvironmentName) > environment.deepOfVariable(Cons.cdrEnvironmentName)) p
+                else Pair(v, environment)
+            }
             else {
                 parameter1.second.getProcedure(Cons.cdrEnvironmentName)
-                    ?: throw Exception("Unexpected error while parsing car procedure")
+                    ?: throw Exception("Unexpected error while parsing $name procedure")
             }
         }
     }

@@ -11,38 +11,45 @@ import expressions.evaluators.specialForms.predicates.ConsPredicate
 class REPL(
     val globalEnvironment: Environment
 ) {
+    private val consPredicate = ConsPredicate()
+
     fun start() {
-        val consPredicate = ConsPredicate()
         while(true) {
             val expression = readLine()
             if (expression != null) {
                 val evaluatedExpression = Expression(expression, globalEnvironment).evaluate()
-                val listToPrint = ArrayList<String>()
-                if(consPredicate.check(evaluatedExpression.first, evaluatedExpression.second)) {
-                    var currentCons: Pair<List<String>, Environment>? = evaluatedExpression
-                    while(currentCons != null) {
-                        //TODO технический долг и вообще кастыль
-                        val carValue = Expression("(car ${ currentCons.first.joinToString(separator = " ", prefix = "(", postfix = ")") })", currentCons.second).evaluate()
-                        val cdrValue = Expression("(cdr ${ currentCons.first.joinToString(separator = " ", prefix = "(", postfix = ")") })", currentCons.second).evaluate()
-
-                        listToPrint.add(evaluateListToString(carValue.first))
-                        currentCons = if(consPredicate.check(cdrValue.first, cdrValue.second)) cdrValue
-                        else {
-                            if(!SelfEvaluating.isNil(cdrValue.first)) listToPrint.add(evaluateListToString(cdrValue.first))
-                            null
-                        }
-                    }
-                    println(listToPrint.joinToString(separator = ", ", prefix = "(", postfix = ")"))
-                }
-                else println(evaluateListToString(evaluatedExpression.first))
+                println(evaluatedExpression)
+                println(evaluateExpressionToString(evaluatedExpression))
             }
             else println("Empty input")
         }
     }
 
-    fun evaluateListToString(list: List<String>): String = when {
-        SelfEvaluating.isInt(list) || SelfEvaluating.isFloat(list) || SelfEvaluating.isQuotedString(list) -> list[1]
-        SelfEvaluating.isNil(list) || SelfEvaluating.isFalse(list) -> list[0]
-        else -> list.joinToString(separator = " ", prefix = "(", postfix = ")")
+    fun evaluateExpressionToString(expression: Pair<List<String>, Environment>): String = when {
+        SelfEvaluating.isInt(expression.first) || SelfEvaluating.isFloat(expression.first) || SelfEvaluating.isQuotedString(expression.first) -> expression.first[1]
+        SelfEvaluating.isNil(expression.first) || SelfEvaluating.isFalse(expression.first) -> expression.first[0]
+        consPredicate.check(expression.first, expression.second) -> {
+            var currentCons: Pair<List<String>, Environment>? = expression
+            val listToPrint = ArrayList<String>()
+            println("start")
+            println(expression)
+            while(currentCons != null) {
+                //TODO технический долг и вообще кастыль
+                val carValue = Expression("(car ${ currentCons.first.joinToString(separator = " ", prefix = "(", postfix = ")") })", currentCons.second).evaluate()
+                val cdrValue = Expression("(cdr ${ currentCons.first.joinToString(separator = " ", prefix = "(", postfix = ")") })", currentCons.second).evaluate()
+                println(">>>")
+                println(carValue)
+                println(cdrValue)
+
+                listToPrint.add(evaluateExpressionToString(carValue))
+                currentCons = if(consPredicate.check(cdrValue.first, cdrValue.second)) cdrValue
+                else {
+                    if(!SelfEvaluating.isNil(cdrValue.first)) listToPrint.add(evaluateExpressionToString(cdrValue))
+                    null
+                }
+            }
+            listToPrint.joinToString(separator = " ", prefix = "(", postfix = ")")
+        }
+        else -> expression.first.joinToString(separator = " ", prefix = "(", postfix = ")")
     }
 }
