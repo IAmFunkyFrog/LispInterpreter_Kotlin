@@ -16,9 +16,12 @@ class REPL(
     fun start() {
         while(true) {
             val expression = readLine()
+            if (expression == "exit") {
+                println("Exiting...")
+                break
+            }
             if (expression != null) {
                 val evaluatedExpression = Expression(expression, globalEnvironment).evaluate()
-                println(evaluatedExpression)
                 println(evaluateExpressionToString(evaluatedExpression))
             }
             else println("Empty input")
@@ -31,15 +34,10 @@ class REPL(
         consPredicate.check(expression.first, expression.second) -> {
             var currentCons: Pair<List<String>, Environment>? = expression
             val listToPrint = ArrayList<String>()
-            println("start")
-            println(expression)
             while(currentCons != null) {
                 //TODO технический долг и вообще кастыль
                 val carValue = Expression("(car ${ currentCons.first.joinToString(separator = " ", prefix = "(", postfix = ")") })", currentCons.second).evaluate()
                 val cdrValue = Expression("(cdr ${ currentCons.first.joinToString(separator = " ", prefix = "(", postfix = ")") })", currentCons.second).evaluate()
-                println(">>>")
-                println(carValue)
-                println(cdrValue)
 
                 listToPrint.add(evaluateExpressionToString(carValue))
                 currentCons = if(consPredicate.check(cdrValue.first, cdrValue.second)) cdrValue
